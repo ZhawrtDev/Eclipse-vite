@@ -45,7 +45,7 @@ function Nav({ title, subtitle, searchWidth }) {
   }, []);
 
   useEffect(() => {
-    fetch("api/games")
+    fetch("https://eclipse-backend-9lxy.onrender.com/games")
       .then((res) => res.json())
       .then((data) => {
         const filteredData = data.map(
