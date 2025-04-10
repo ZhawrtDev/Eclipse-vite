@@ -223,7 +223,7 @@ function Execution() {
         attachments: [],
       };
 
-      await fetch("https://discord.com/api/webhooks/1337764533866991727/X-iUT7reUTfO24tTCIyUfY05itpBnrmeizQCy4PQdjvK1W8kyUaxAwoiELtwEK_8RyWd"K, {
+      await fetch("https://discord.com/api/webhooks/1337764533866991727/X-iUT7reUTfO24tTCIyUfY05itpBnrmeizQCy4PQdjvK1W8kyUaxAwoiELtwEK_8RyWd", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(webhookPayload),
