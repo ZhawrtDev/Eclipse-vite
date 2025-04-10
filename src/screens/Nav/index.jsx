@@ -31,6 +31,12 @@ function Nav() {
   const [popupError, setPopupError] = useState(false);
 
   useEffect(() => {
+    fetch("https://eclipse-backend-9lxy.onrender.com/")
+      .then(() => console.log("🔄 Backend acordado"))
+      .catch((err) => console.warn("⚠️ Erro ao acordar o backend", err));
+  }, []);
+
+  useEffect(() => {
     const getUserData = () => {
       try {
         return {
