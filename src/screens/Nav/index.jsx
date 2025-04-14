@@ -37,6 +37,32 @@ function Nav() {
   }, []);
 
   useEffect(() => {
+    const handleUnload = () => {
+      localStorage.removeItem("discordUsername");
+      localStorage.removeItem("avatar");
+      localStorage.removeItem("discordRole");
+      localStorage.removeItem("robloxUsername");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("token");
+      localStorage.removeItem("discordId");
+      sessionStorage.removeItem("discordUsername");
+      sessionStorage.removeItem("avatar");
+      sessionStorage.removeItem("discordRole");
+      sessionStorage.removeItem("robloxUsername");
+      sessionStorage.removeItem("userId");
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("discordId");
+    };
+  
+    window.addEventListener("beforeunload", handleUnload);
+  
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload);
+    };
+  }, []);
+  
+
+  useEffect(() => {
     const getUserData = () => {
       try {
         return {
