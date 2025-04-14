@@ -37,27 +37,32 @@ function Nav() {
   }, []);
 
   useEffect(() => {
-    const handleUnload = () => {
-      localStorage.removeItem("discordUsername");
-      localStorage.removeItem("avatar");
-      localStorage.removeItem("discordRole");
-      localStorage.removeItem("robloxUsername");
-      localStorage.removeItem("userId");
-      localStorage.removeItem("token");
-      localStorage.removeItem("discordId");
-      sessionStorage.removeItem("discordUsername");
-      sessionStorage.removeItem("avatar");
-      sessionStorage.removeItem("discordRole");
-      sessionStorage.removeItem("robloxUsername");
-      sessionStorage.removeItem("userId");
-      sessionStorage.removeItem("token");
-      sessionStorage.removeItem("discordId");
+    const handleVisibilityChange = () => {
+      const navEntries = performance.getEntriesByType("navigation");
+      const isReload = navEntries.length && navEntries[0].type === "reload";
+  
+      if (document.visibilityState === "hidden" && !isReload) {
+        localStorage.removeItem("discordUsername");
+        localStorage.removeItem("avatar");
+        localStorage.removeItem("discordRole");
+        localStorage.removeItem("robloxUsername");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("token");
+        localStorage.removeItem("discordId");
+        sessionStorage.removeItem("discordUsername");
+        sessionStorage.removeItem("avatar");
+        sessionStorage.removeItem("discordRole");
+        sessionStorage.removeItem("robloxUsername");
+        sessionStorage.removeItem("userId");
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("discordId");
+      }
     };
   
-    window.addEventListener("beforeunload", handleUnload);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
   
     return () => {
-      window.removeEventListener("beforeunload", handleUnload);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
   
