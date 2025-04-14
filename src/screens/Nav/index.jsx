@@ -37,20 +37,10 @@ function Nav() {
   }, []);
 
   useEffect(() => {
-    const markReload = () => {
-      sessionStorage.setItem("reloading", "true");
-    };
+    const handleLogout = (event) => {
+      const isReload = event.persisted;
   
-    window.addEventListener("keydown", (e) => {
-      if ((e.key === "F5") || (e.ctrlKey && e.key === "r")) {
-        markReload();
-      }
-    });
-  
-    window.addEventListener("beforeunload", () => {
-      const isReloading = sessionStorage.getItem("reloading") === "true";
-  
-      if (!isReloading) {
+      if (!isReload) {
         localStorage.removeItem("discordUsername");
         localStorage.removeItem("avatar");
         localStorage.removeItem("discordRole");
@@ -66,10 +56,15 @@ function Nav() {
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("discordId");
       }
+    };
   
-      sessionStorage.removeItem("reloading");
-    });
+    window.addEventListener("pagehide", handleLogout);
+  
+    return () => {
+      window.removeEventListener("pagehide", handleLogout);
+    };
   }, []);
+  
 
   useEffect(() => {
     const getUserData = () => {
@@ -87,6 +82,12 @@ function Nav() {
     };
 
     const storedUserData = getUserData();
+
+    if (!storedUserData.discordUsername) {
+      setError("reload the page");
+      setLoading(false);
+      return;
+    }
 
     setUserData(storedUserData);
     setLoading(false);
