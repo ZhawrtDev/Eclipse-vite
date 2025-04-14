@@ -88,12 +88,6 @@ function Nav() {
 
     const storedUserData = getUserData();
 
-    if (!storedUserData.discordUsername) {
-      setError("reload the page");
-      setLoading(false);
-      return;
-    }
-
     setUserData(storedUserData);
     setLoading(false);
   }, []);
