@@ -9,7 +9,7 @@ import {
 import { faWindows, faAndroid } from "@fortawesome/free-brands-svg-icons";
 import Nav from "../../components/Cabeçario";
 import Popup from '../../components/Popup'
-import { database, ref, set, get, update } from "../../firebaseConfig";
+import { database, ref, set, get, update, push } from "../../firebaseConfig";
 
 
 function Dashboard() {
@@ -127,10 +127,7 @@ function Dashboard() {
       }
   
       if (!updated) {
-        const nextIndex = Object.keys(existingNames).length;
-        await update(nameListRef, {
-          [nextIndex]: { Name: newRobloxUsername },
-        });
+        await push(nameListRef, { Name: newRobloxUsername });
       }
   
       setPopupText("Roblox username successfully updated!");

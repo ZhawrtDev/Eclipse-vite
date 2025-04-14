@@ -101,7 +101,7 @@ function Nav() {
   }, []);
   
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   const handleClick = (item) => {
