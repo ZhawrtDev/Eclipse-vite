@@ -80,18 +80,26 @@ function Nav() {
         return null;
       }
     };
-
+  
     const storedUserData = getUserData();
-
+  
     if (!storedUserData.discordUsername) {
-      setError("reload the page");
-      setLoading(false);
-      return;
+      const interval = setInterval(() => {
+        const updatedData = getUserData();
+        if (updatedData.discordUsername) {
+          setUserData(updatedData);
+          setLoading(false);
+          clearInterval(interval);
+        }
+      }, 1000);
+  
+      return () => clearInterval(interval);
     }
-
+  
     setUserData(storedUserData);
     setLoading(false);
   }, []);
+  
 
   if (loading) return <p>Carregando...</p>;
   if (error) return <p>{error}</p>;
