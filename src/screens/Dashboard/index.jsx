@@ -235,7 +235,7 @@ function Dashboard() {
               resources, player interactions, and execution functionalities.
               This mechanism enhances security by restricting unauthorized
               access, allowing only designated individuals to utilize advanced
-              features and ServerSide controls within the Roblox environment.
+              features and ServerSide controls within the Roblox environment..
             </p>
 
             <div className="outher">
