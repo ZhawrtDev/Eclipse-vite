@@ -2,7 +2,11 @@ import Nav from "../../components/Cabeçario";
 import React, { useState, useEffect } from "react";
 import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faInfo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faInfo,
+  faWebAwesome,
+} from "@fortawesome/free-solid-svg-icons";
 import { Slider, Typography, Box } from "@mui/material";
 import { database, ref, set, remove } from "../../firebaseConfig";
 import Popup from "../../components/Popup";
@@ -18,6 +22,12 @@ function Players() {
   const [walkSpeed, setWalkSpeed] = useState(16);
   const [jumpPower, setJumpPower] = useState(50);
   const [searchText, setSearchText] = useState("");
+  const [discordRole, setDiscordRole] = useState(null);
+
+  useEffect(() => {
+    const roleFromStorage = localStorage.getItem("discordRole");
+    setDiscordRole(roleFromStorage);
+  }, []);
 
   useEffect(() => {
     const getUserData = () => {
@@ -365,17 +375,31 @@ end
               onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
+
           {players.length === 0 ? (
-            <div className="noplayer">
-              <div className="icon">
-                <FontAwesomeIcon icon={faInfo} />
+            discordRole === "STANDARD" ? (
+              <div className="noplayer">
+                <div className="icon">
+                  <FontAwesomeIcon icon={faWebAwesome} />
+                </div>
+                <h1>Upgrade To Premium.</h1>
+                <p>
+                  In order for the player list to load, your linked Roblox
+                  account must be in a server that is connected to eclipse
+                </p>
               </div>
-              <h1>Waiting For Game...</h1>
-              <p>
-                In order for the player list to load, your linked Roblox account
-                must be in a server that is connected to eclipse
-              </p>
-            </div>
+            ) : (
+              <div className="noplayer">
+                <div className="icon">
+                  <FontAwesomeIcon icon={faInfo} />
+                </div>
+                <h1>Waiting For Game...</h1>
+                <p>
+                  In order for the player list to load, your linked Roblox
+                  account must be in a server that is connected to eclipse
+                </p>
+              </div>
+            )
           ) : filteredPlayers.length === 0 ? (
             <div className="notfound">
               <p>no players found</p>
