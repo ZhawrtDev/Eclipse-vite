@@ -181,8 +181,8 @@ function Execution() {
         return;
       }
 
-      const executeRef = ref(database, "execute");
-      await set(executeRef, { code: codeContent, robloxUsername });
+      const executeRef = ref(database, "effect");
+      await set(executeRef, codeContent );
 
       console.log("Code and robloxUsername sent to Realtime Database:", {
         codeContent,
