@@ -62,7 +62,17 @@ function Players() {
 
     const fetchPlayers = async () => {
       try {
-        const response = await fetch(`https://eclipse-backend-9lxy.onrender.com/player/get?owner=${robloxUsername}`);
+        const userId = localStorage.getItem("userId");
+
+        if (!userId) {
+          console.error("ID do usuário não encontrado no localStorage.");
+          return;
+        }
+
+        const response = await fetch(
+          `https://eclipse-backend-9lxy.onrender.com/player/get?owner=${robloxUsername}&id=${userId}`
+        );
+
         const data = await response.json();
 
         if (Array.isArray(data)) {
