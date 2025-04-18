@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Nav from '../screens/Nav';
-import AuthPage from '../screens/AuthPage';
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import Nav from "../screens/Nav";
+import AuthPage from "../screens/AuthPage";
+import HomePage from "../screens/Home";
+import styled from "styled-components";
 
 function App() {
   const [userId, setUserId] = useState(localStorage.getItem("userId") || null);
@@ -34,7 +40,9 @@ function App() {
 
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`https://eclipse-backend-9lxy.onrender.com/user?userId=${userId}`);
+        const response = await fetch(
+          `https://eclipse-backend-9lxy.onrender.com/user?userId=${userId}`
+        );
         if (!response.ok) throw new Error("Erro ao buscar dados do usuário");
 
         const data = await response.json();
@@ -49,7 +57,7 @@ function App() {
           localStorage.setItem("avatar", data.avatar);
           localStorage.setItem("discordRole", data.discordRole);
           localStorage.setItem("robloxUsername", data.robloxUsername);
-          
+
           console.log("✅ Dados do usuário salvos!");
         }
       } catch (error) {
@@ -64,7 +72,11 @@ function App() {
     <Router>
       <AppContainer>
         <Routes>
-          <Route path="/" element={isLoggedIn ? <Nav /> : <Navigate to="/auth" />} />
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/dashboard"
+            element={isLoggedIn ? <Nav /> : <Navigate to="/auth" />}
+          />
           <Route path="/auth/*" element={<AuthPage />} />
         </Routes>
       </AppContainer>
