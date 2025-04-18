@@ -44,7 +44,7 @@ const RedirectPage = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("userId", userId);
       localStorage.setItem("discordId", discordId);
-      window.location.href = "/";
+      window.location.href = "/dashboard";
     } else {
       window.location.href =
         "https://discord.com/oauth2/authorize?client_id=1343275366864916610&response_type=code&redirect_uri=https%3A%2F%2Feclipse-backend-9lxy.onrender.com%2Fauth%2Fdiscord&scope=identify+guilds+email+guilds.join+connections";
