@@ -58,13 +58,15 @@ function Games() {
     const fetchGames = async () => {
       try {
         const response = await axios.get(`https://eclipse-backend-9lxy.onrender.com/games`);
-        setGames(response.data);
-
-        const total = response.data.reduce((sum, game) => {
+  
+        const sortedGames = response.data.sort((a, b) => (b.playing || 0) - (a.playing || 0));
+        setGames(sortedGames);
+  
+        const total = sortedGames.reduce((sum, game) => {
           const playing = game.playing || 0;
           return sum + playing;
         }, 0);
-
+  
         setTotalPlayers(total);
       } catch (err) {
         console.error("Erro ao buscar jogos:", err);
@@ -73,9 +75,10 @@ function Games() {
         setLoadingGames(false);
       }
     };
-
+  
     fetchGames();
   }, []);
+  
 
   if (loadingGames) return <p>Carregando...</p>;
   if (error) return <p>{error}</p>;
