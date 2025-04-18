@@ -73,6 +73,7 @@ function App() {
       <AppContainer>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route
             path="/dashboard"
             element={isLoggedIn ? <Nav /> : <Navigate to="/auth" />}
