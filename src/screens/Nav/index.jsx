@@ -161,7 +161,7 @@ function Nav() {
               <img src={logo} className="logo" />
             </div>
             <div className="text">
-              <p>ServerSide</p>
+              <p>ServerSide.</p>
               <h1>ECLIPSE</h1>
             </div>
           </div>
