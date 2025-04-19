@@ -37,32 +37,19 @@ function Nav() {
   }, []);
 
   useEffect(() => {
-    const handleLogout = (event) => {
-      const isReload = event.persisted;
+    const discordId = localStorage.getItem("discordId");
   
-      if (!isReload) {
-        localStorage.removeItem("discordUsername");
-        localStorage.removeItem("avatar");
-        localStorage.removeItem("discordRole");
-        localStorage.removeItem("robloxUsername");
-        localStorage.removeItem("userId");
-        localStorage.removeItem("token");
-        localStorage.removeItem("discordId");
-        sessionStorage.removeItem("discordUsername");
-        sessionStorage.removeItem("avatar");
-        sessionStorage.removeItem("discordRole");
-        sessionStorage.removeItem("robloxUsername");
-        sessionStorage.removeItem("userId");
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("discordId");
-      }
-    };
-  
-    window.addEventListener("pagehide", handleLogout);
-  
-    return () => {
-      window.removeEventListener("pagehide", handleLogout);
-    };
+    if (discordId) {
+      fetch(`https://eclipse-backend-9lxy.onrender.com/verify-discord?discordId=${discordId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.valid) {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = "/";
+          }
+        });
+    }
   }, []);
   
 
