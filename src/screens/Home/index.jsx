@@ -331,7 +331,7 @@ function Home() {
                     href="https://eclipseutilities.bgng.io/product/premiumeclipse"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="buy"
+                    className="buy a"
                   >
                     Purchase
                   </a>
@@ -515,7 +515,7 @@ function Home() {
                     href="https://www.roblox.com/pt/catalog/102872228150886/Byefron-Premium"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="buy"
+                    className="buy a"
                   >
                     Purchase
                   </a>
