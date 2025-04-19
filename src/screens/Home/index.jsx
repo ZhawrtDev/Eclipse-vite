@@ -4,7 +4,13 @@ import logo from "../../assets/eclipse.png";
 import Robux from "../../assets/Robux.png";
 import Background from "../../assets/background.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faGaugeSimpleHigh,
+  faShield,
+  faPlug,
+  faBolt,
+} from "@fortawesome/free-solid-svg-icons";
 import { faDiscord, faWindows } from "@fortawesome/free-brands-svg-icons";
 
 function Home() {
@@ -48,7 +54,7 @@ function Home() {
 
         <div className="nav">
           <div className="lnk a">Home</div>
-          <div className="lnk">Pricing</div>
+          <div className="lnk">Showcase</div>
           <div className="lnk">Info</div>
         </div>
 
@@ -84,8 +90,8 @@ function Home() {
             CHOOSE RIGHT THIS TIME<span>!</span>
           </h2>
           <h1>
-            Not All ServerSides Are Equal{" "}
-            <span className="s2">Make The Right Pick</span>
+            Choose Smart. Choose Eclipse{" "}
+            <span className="s2">The Best ROBLOX Serverside</span>
           </h1>
           <div className="content-p">
             <FontAwesomeIcon
@@ -94,7 +100,7 @@ function Home() {
                 fontSize: 50,
                 marginRight: 20,
                 opacity: 0.4,
-                color: "#2563EB",
+                color: "#BFF205",
               }}
             />
             <p>
@@ -516,6 +522,169 @@ function Home() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* SHOWCASE */}
+      <div className="showcase">
+        <div className="main">
+          <div className="text">
+            <h1>
+              Explore the <span>Full Potential</span> <br />
+              of What We Uniquely Bring to You
+            </h1>
+            <p>
+              We offer a powerful and streamlined solution designed to put you
+              in control. Whether you're looking to enhance your capabilities or
+              explore new possibilities, our tools are built to deliver
+              performance, flexibility, and a smooth experience from start to
+              finish. Your advantage starts here.
+            </p>
+          </div>
+
+          <div className="main-boxs">
+            <div className="box">
+              <div className="icon">
+                <FontAwesomeIcon
+                  icon={faShield}
+                  style={{
+                    color: "#101010",
+                    border: "1px solid #101010",
+                    padding: 10,
+                    borderRadius: 100,
+                    fontSize: "17px",
+                  }}
+                />
+              </div>
+              <div className="text-box">
+                <h1>Advanced Security</h1>
+                <p>
+                  Protect your data with top-tier security measures, ensuring
+                  peace of mind.
+                </p>
+              </div>
+            </div>
+
+            <div className="box">
+              <div className="icon">
+                <FontAwesomeIcon
+                  icon={faGaugeSimpleHigh}
+                  style={{
+                    color: "#101010",
+                    border: "1px solid #101010",
+                    padding: 10,
+                    borderRadius: 100,
+                    fontSize: "17px",
+                  }}
+                />
+              </div>
+              <div className="text-box">
+                <h1>Complete Control</h1>
+                <p>Take charge with precision and full access at all times.</p>
+              </div>
+            </div>
+
+            <div className="box">
+              <div className="icon">
+                <FontAwesomeIcon
+                  icon={faPlug}
+                  style={{
+                    color: "#101010",
+                    border: "1px solid #101010",
+                    padding: 10,
+                    borderRadius: 100,
+                    fontSize: "17px",
+                  }}
+                />
+              </div>
+              <div className="text-box">
+                <h1>Seamless Integration</h1>
+                <p>Easily integrate with no interruptions or delays.</p>
+              </div>
+            </div>
+
+            <div className="box">
+              <div className="icon">
+                <FontAwesomeIcon
+                  icon={faBolt}
+                  style={{
+                    color: "#101010",
+                    border: "1px solid #101010",
+                    padding: 10,
+                    borderRadius: 100,
+                    fontSize: "17px",
+                  }}
+                />
+              </div>
+              <div className="text-box">
+                <h1>Boosted Performance</h1>
+                <p>Experience faster, more efficient operations.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="videos">
+          <div className="video">
+            <div className="vd">
+              <iframe
+                width="100%"
+                height="315"
+                src="https://www.youtube.com/embed/MuOQe1iZ2ms"
+                title="YouTube video 1"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <div className="text-yt">
+              <div className="inform">
+                <div className="category">
+                  <FontAwesomeIcon icon={faBolt} style={{ color: "#fff" }} />
+                  <h2>ServerSide Showcases</h2>
+                </div>
+                <div className="view">86+ views</div>
+              </div>
+              <h1>Eclipse Website Showcase Clean</h1>
+              <p>
+              We offer a powerful and streamlined solution designed to put you
+              in control. Whether you're looking to enhance your capabilities or
+              explore new possibilities, our tools are built to deliver
+              performance, flexibility, and a smooth experience from start to
+              finish. Your advantage starts here.
+            </p>
+            </div>
+          </div>
+
+          <div className="video">
+            <div className="vd">
+              <iframe
+                width="100%"
+                height="315"
+                src="https://www.youtube.com/embed/JMBSAwz56W4"
+                title="YouTube video 2"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <div className="text-yt">
+              <div className="inform">
+                <div className="category">
+                  <FontAwesomeIcon icon={faBolt} style={{ color: "#fff" }} />
+                  <h2>ServerSide Showcases</h2>
+                </div>
+                <div className="view">6,2k+ views</div>
+              </div>
+              <h1>Eclipse Serverside 2025 byfron bypass</h1>
+              <p>
+                We offer a powerful and streamlined solution designed to put you
+                in control. Whether you're looking to enhance your capabilities
+                or explore new possibilities, our tools are built to deliver
+                performance, flexibility, and a smooth experience from start to
+                finish. Your advantage starts here.
+              </p>
+            </div>
           </div>
         </div>
       </div>
